@@ -4,7 +4,7 @@ import draftToHtml from '../index';
 
 describe('draftToHtml test suite', () => {
   it('should return correct html', () => {
-    const html = '<p>testing</p>\n';
+    const html = '<div>testing</div>\n';
     const arrContentBlocks = convertFromHTML(html);
     const contentState = ContentState.createFromBlockArray(arrContentBlocks);
     const result = draftToHtml(convertToRaw(contentState));

@@ -3,25 +3,27 @@ import { forEach, isEmptyString } from './common';
 /**
 * Mapping block-type to corresponding html tag.
 */
-const blockTypesMapping: Object = {
-  unstyled: 'p',
-  'header-one': 'h1',
-  'header-two': 'h2',
-  'header-three': 'h3',
-  'header-four': 'h4',
-  'header-five': 'h5',
-  'header-six': 'h6',
-  'unordered-list-item': 'ul',
-  'ordered-list-item': 'ol',
-  blockquote: 'blockquote',
-  code: 'pre',
+function blockTypesMapping(tagsMapping: Object): Object {
+  return {
+    unstyled: tagsMapping['unstyled'] || 'div',
+    'header-one': tagsMapping['header-one'] || 'h1',
+    'header-two': tagsMapping['header-two'] || 'h2',
+    'header-three': tagsMapping['header-three'] || 'h3',
+    'header-four': tagsMapping['header-four'] || 'h4',
+    'header-five': tagsMapping['header-five'] || 'h5',
+    'header-six': tagsMapping['header-six'] || 'h6',
+    'unordered-list-item': tagsMapping['unordered-list-item'] || 'ul',
+    'ordered-list-item': tagsMapping['ordered-list-item'] || 'ol',
+    blockquote: tagsMapping['blockquote'] || 'blockquote',
+    code: tagsMapping['code'] || 'pre',
+  }
 };
 
 /**
 * Function will return HTML tag for a block.
 */
-export function getBlockTag(type: string): string {
-  return type && blockTypesMapping[type];
+export function getBlockTag(type: string, tagsMapping: Object): string {
+  return type && blockTypesMapping(tagsMapping)[type];
 }
 
 /**
@@ -505,6 +507,7 @@ export function getBlockMarkup(
   hashtagConfig: Object,
   directional: boolean,
   customEntityTransform: Function,
+  tagsMapping: Object,
 ): string {
   const blockHtml = [];
   if (isAtomicEntityBlock(block)) {
@@ -515,7 +518,7 @@ export function getBlockMarkup(
       customEntityTransform,
     ));
   } else {
-    const blockTag = getBlockTag(block.type);
+    const blockTag = getBlockTag(block.type, tagsMapping);
     if (blockTag) {
       blockHtml.push(`<${blockTag}`);
       const blockStyle = getBlockStyle(block.data);

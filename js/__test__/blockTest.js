@@ -13,9 +13,9 @@ import {
 
 describe('getBlockTag test suite', () => {
   it('should return correct block tag when getBlockTag is called', () => {
-    assert.equal(getBlockTag('header-one'), 'h1');
-    assert.equal(getBlockTag('unordered-list-item'), 'ul');
-    assert.equal(getBlockTag('unstyled'), 'p');
+    assert.equal(getBlockTag('header-one', {}), 'h1');
+    assert.equal(getBlockTag('unordered-list-item', {}), 'ul');
+    assert.equal(getBlockTag('unstyled', {}), 'div');
   });
 });
 

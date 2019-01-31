@@ -11,8 +11,11 @@ export default function draftToHtml(
   hashtagConfig: Object,
   directional: boolean,
   customEntityTransform: Function,
+  tagsMapping: ?Object
 ): string {
   const html = [];
+  tagsMapping = tagsMapping || {}
+
   if (editorContent) {
     const { blocks, entityMap } = editorContent;
     if (blocks && blocks.length > 0) {
@@ -22,7 +25,7 @@ export default function draftToHtml(
           listBlocks.push(block);
         } else {
           if (listBlocks.length > 0) {
-            const listHtml = getListMarkup(listBlocks, entityMap, hashtagConfig, customEntityTransform); // eslint-disable-line max-len
+            const listHtml = getListMarkup(listBlocks, entityMap, hashtagConfig, customEntityTransform, tagsMapping); // eslint-disable-line max-len
             html.push(listHtml);
             listBlocks = [];
           }
@@ -32,12 +35,13 @@ export default function draftToHtml(
             hashtagConfig,
             directional,
             customEntityTransform,
+            tagsMapping,
           );
           html.push(blockHtml);
         }
       });
       if (listBlocks.length > 0) {
-        const listHtml = getListMarkup(listBlocks, entityMap, hashtagConfig, directional, customEntityTransform); // eslint-disable-line max-len
+        const listHtml = getListMarkup(listBlocks, entityMap, hashtagConfig, directional, customEntityTransform, tagsMapping); // eslint-disable-line max-len
         html.push(listHtml);
         listBlocks = [];
       }

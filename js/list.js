@@ -23,6 +23,7 @@ export function getListMarkup(
   hashtagConfig: Object,
   directional: boolean,
   customEntityTransform: Function,
+  tagsMapping: Object
 ): string {
   const listHtml = [];
   let nestedListBlock = [];
@@ -30,10 +31,10 @@ export function getListMarkup(
   listBlocks.forEach((block) => {
     let nestedBlock = false;
     if (!previousBlock) {
-      listHtml.push(`<${getBlockTag(block.type)}>\n`);
+      listHtml.push(`<${getBlockTag(block.type, tagsMapping)}>\n`);
     } else if (previousBlock.type !== block.type) {
-      listHtml.push(`</${getBlockTag(previousBlock.type)}>\n`);
-      listHtml.push(`<${getBlockTag(block.type)}>\n`);
+      listHtml.push(`</${getBlockTag(previousBlock.type, tagsMapping)}>\n`);
+      listHtml.push(`<${getBlockTag(block.type, tagsMapping)}>\n`);
     } else if (previousBlock.depth === block.depth) {
       if (nestedListBlock && nestedListBlock.length > 0) {
         listHtml.push(getListMarkup(
@@ -42,6 +43,7 @@ export function getListMarkup(
           hashtagConfig,
           directional,
           customEntityTransform,
+          tagsMapping,
         ));
         nestedListBlock = [];
       }
@@ -76,8 +78,9 @@ export function getListMarkup(
       hashtagConfig,
       directional,
       customEntityTransform,
+      tagsMapping,
     ));
   }
-  listHtml.push(`</${getBlockTag(previousBlock.type)}>\n`);
+  listHtml.push(`</${getBlockTag(previousBlock.type, tagsMapping)}>\n`);
   return listHtml.join('');
 }
